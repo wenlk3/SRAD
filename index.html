@@ -5,158 +5,146 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SRAD: Smooth Refinement with Adaptive Delineation for Fattening Building Edges in Satellite DSMs</title>
   <meta name="description" content="SRAD refines fattening building edges in satellite DSMs through adaptive buffer delineation and gradient consistent height refinement.">
+
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    :root {
-      --srad-blue: #1f6feb;
-      --srad-green: #159a74;
-      --srad-ink: #172033;
-      --srad-soft: #f6f8fb;
-      --srad-line: #dce3ef;
+    body {
+      color: #1f2937;
+      background: #fff;
     }
-    body { color: var(--srad-ink); }
-    .hero-body { padding-bottom: 2.5rem; }
+
+    .hero-body {
+      padding-bottom: 2rem;
+    }
+
+    .author-line {
+      margin: 1rem auto 0;
+      max-width: 900px;
+      line-height: 1.8;
+    }
+
     .publication-links .button.is-dark {
-      background: #111827 !important;
-      border-color: #111827 !important;
+      background-color: #000 !important;
+      border-color: #000 !important;
       color: #fff !important;
+      opacity: 1 !important;
+      cursor: pointer;
     }
-    .author-line { margin: 1rem auto 0; max-width: 900px; line-height: 1.8; }
-    .tagline {
-      display: inline-flex;
-      gap: .5rem;
-      align-items: center;
-      margin-top: 1.2rem;
-      padding: .45rem .8rem;
-      border-radius: 8px;
-      background: #edf6ff;
-      color: #174f8f;
-      font-weight: 700;
+
+    .section.is-light {
+      background: #f7f8fb;
     }
-    .section.is-light { background: var(--srad-soft); }
-    .figure-panel, .video-panel, .metric-panel {
-      border: 1px solid var(--srad-line);
-      border-radius: 8px;
+
+    .figure-panel {
       background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
       padding: 1rem;
-      box-shadow: 0 8px 28px rgba(23, 32, 51, .06);
+      margin-bottom: 1.2rem;
     }
-    .video-panel { position: relative; overflow: hidden; min-height: 320px; }
-    .video-panel img {
+
+    .figure-panel img {
       width: 100%;
-      border-radius: 6px;
-      background: #0f172a;
       display: block;
-    }
-    .fallback-animation {
-      min-height: 300px;
       border-radius: 6px;
-      background:
-        linear-gradient(90deg, rgba(31,111,235,.14), transparent 32%, rgba(21,154,116,.16)),
-        repeating-linear-gradient(90deg, #e9eef7 0 1px, transparent 1px 36px),
-        repeating-linear-gradient(0deg, #e9eef7 0 1px, transparent 1px 36px);
-      position: relative;
-      overflow: hidden;
+      background: #111827;
     }
-    .fallback-animation::before,
-    .fallback-animation::after {
-      content: "";
-      position: absolute;
-      inset: 18% 8%;
-      border-radius: 8px;
-      border: 3px solid var(--srad-blue);
-      transform: skew(-8deg);
-      animation: trace 4.5s ease-in-out infinite alternate;
-    }
-    .fallback-animation::after {
-      inset: 34% 20%;
-      border-color: var(--srad-green);
-      animation-delay: -1.4s;
-    }
-    .scan-line {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      left: 12%;
-      background: #ef4444;
-      box-shadow: 0 0 22px rgba(239, 68, 68, .45);
-      animation: scan 4s linear infinite;
-    }
-    @keyframes scan { 0% { left: 8%; } 100% { left: 92%; } }
-    @keyframes trace {
-      0% { transform: translateX(-16px) skew(-8deg) scale(.96); }
-      100% { transform: translateX(22px) skew(-8deg) scale(1.03); }
-    }
-    .method-grid {
+
+    .gif-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
     }
-    .method-card {
-      border: 1px solid var(--srad-line);
-      border-radius: 8px;
+
+    .gif-card {
       background: #fff;
-      padding: 1rem;
-      height: 100%;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: .75rem;
     }
-    .method-card strong { color: var(--srad-blue); }
-    table.metrics { width: 100%; font-size: .92rem; }
-    table.metrics th, table.metrics td { padding: .55rem .45rem; border-bottom: 1px solid var(--srad-line); text-align: right; }
-    table.metrics th:first-child, table.metrics td:first-child { text-align: left; }
-    table.metrics tr.best td { font-weight: 700; color: #0f766e; }
-    .caption { color: #526078; font-size: .95rem; margin-top: .8rem; }
+
+    .gif-card img {
+      width: 100%;
+      display: block;
+      border-radius: 6px;
+      background: #111827;
+    }
+
+    .gif-card p {
+      margin-top: .65rem;
+      margin-bottom: 0;
+      color: #4b5563;
+      font-size: .92rem;
+      text-align: center;
+    }
+
+    table.metrics {
+      width: 100%;
+      font-size: .92rem;
+    }
+
+    table.metrics th,
+    table.metrics td {
+      padding: .55rem .45rem;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: right;
+    }
+
+    table.metrics th:first-child,
+    table.metrics td:first-child {
+      text-align: left;
+    }
+
+    table.metrics tr.best td {
+      font-weight: 700;
+      color: #0f766e;
+    }
+
+    .caption {
+      color: #4b5563;
+      font-size: .95rem;
+      margin-top: .8rem;
+    }
+
     @media (max-width: 768px) {
-      .method-grid { grid-template-columns: 1fr; }
-      .title.is-1 { font-size: 2rem; }
-      .video-panel { min-height: 220px; }
+      .title.is-1 {
+        font-size: 2rem;
+      }
+
+      .gif-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
   <section class="hero">
     <div class="hero-body">
       <div class="container is-max-desktop has-text-centered">
-        <h1 class="title is-1">SRAD: Smooth Refinement with Adaptive Delineation for Fattening Building Edges in Satellite DSMs</h1>
+        <h1 class="title is-1">
+          SRAD: Smooth Refinement with Adaptive Delineation for Fattening Building Edges in Satellite DSMs
+        </h1>
+
         <p class="subtitle is-5 author-line">
           Lekang Wen, Yujia Feng, Ruiqiu Xu, Xu Huang, Mi Wang
         </p>
+
         <p class="author-line">
           Sun Yat-Sen University · Wuhan University · Hubei Luojia Laboratory
         </p>
-        <p class="tagline"><i class="fas fa-map-location-dot"></i> Satellite DSM post-refinement for building edge-fattening</p>
+
         <div class="publication-links" style="margin-top:1.4rem;">
           <span class="link-block">
-            <a class="button is-normal is-rounded is-dark" href="#method">
-              <span class="icon"><i class="fas fa-diagram-project"></i></span><span>Method</span>
-            </a>
-          </span>
-          <span class="link-block">
-            <a class="button is-normal is-rounded is-dark" href="#comparison">
-              <span class="icon"><i class="fas fa-sliders"></i></span><span>Comparison</span>
-            </a>
-          </span>
-          <span class="link-block">
-            <a class="button is-normal is-rounded is-dark" href="#results">
-              <span class="icon"><i class="fas fa-chart-line"></i></span><span>Results</span>
+            <a class="button is-normal is-rounded is-dark" href="javascript:void(0);" aria-disabled="true">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>Code (Coming Soon)</span>
             </a>
           </span>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="hero teaser">
-    <div class="container is-max-desktop">
-      <div class="hero-body">
-        <div class="video-panel">
-          <img src="static/videos/JAX_033_buffer_optimization.gif" alt="JAX 033 buffer optimization animation">
-        </div>
-        <p class="caption">
-          SRAD targets the transition region where satellite DSM building edges are blurred and expanded toward surrounding ground. The animation is loaded from <code>static/videos/JAX_033_buffer_optimization.gif</code>.
-        </p>
       </div>
     </div>
   </section>
@@ -166,64 +154,63 @@
       <h2 class="title is-3 has-text-centered">Brief Introduction</h2>
       <div class="content has-text-justified">
         <p>
-          Satellite photogrammetry offers low-cost and broad-coverage Digital Surface Models (DSMs), but building boundaries often suffer from edge-fattening caused by dense matching smoothness constraints. Fixed-buffer DSM post-refinement can miss local fattening widths or include nearby ground objects, while height-similarity refinement may create abrupt and unnatural transitions.
+          Satellite photogrammetry provides broad-coverage Digital Surface Models (DSMs), but building boundaries often suffer from edge-fattening caused by dense matching smoothness constraints. Fixed-buffer DSM post-refinement can miss local fattening widths or include nearby ground objects, while height-similarity refinement may create abrupt and unnatural transitions.
         </p>
         <p>
-          SRAD addresses these issues with two connected designs. Height Potential Contour Tracing (HPCT) adaptively delineates fattening-edge buffers from building footprints and DSM heights. Gradient Consistent Refinement (GCR) then optimizes heights within these buffers using plane labels and gradient consistency, preserving smooth topographic transitions while correcting building edges.
+          SRAD addresses these issues with two connected designs. Height Potential Contour Tracing (HPCT) adaptively delineates fattening-edge buffers from building footprints and DSM heights. Gradient Consistent Refinement (GCR) then optimizes heights inside these buffers using plane labels and gradient consistency, preserving smooth topographic transitions while correcting building edges.
         </p>
       </div>
-      <div class="method-grid">
-        <div class="method-card"><strong>Problem</strong><br>Fattening edges blur building boundaries and contaminate nearby ground in satellite DSM products.</div>
-        <div class="method-card"><strong>Delineation</strong><br>HPCT traces adaptive interior and exterior buffers using a height potential field, attraction force, and elastic force.</div>
-        <div class="method-card"><strong>Refinement</strong><br>GCR replaces height similarity with gradient consistency to support smooth, continuous height transitions.</div>
-      </div>
     </div>
   </section>
 
-  <section class="section" id="method">
+  <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Framework of SRAD</h2>
-      <div class="figure-panel">
-        <div class="method-grid">
-          <div class="method-card">
-            <strong>1. Input priors</strong><br>
-            Initial satellite DSM, DOM/image guidance, and building footprints define where edge correction should be considered.
-          </div>
-          <div class="method-card">
-            <strong>2. HPCT</strong><br>
-            Interior and exterior contours deform on the height potential surface until they delineate adaptive buffers.
-          </div>
-          <div class="method-card">
-            <strong>3. GCR</strong><br>
-            Plane labels are optimized inside the adaptive buffers and merged back into the original DSM.
-          </div>
-        </div>
+      <h2 class="title is-3 has-text-centered">Framework</h2>
+      <div class="content has-text-justified">
+        <p>
+          SRAD separates where to refine from how to refine. HPCT estimates adaptive interior and exterior buffers around each building footprint from the height potential field, and GCR updates only these selected edge regions before merging the refined heights back into the initial DSM.
+        </p>
       </div>
-      <p class="caption">
-        The method separates where to refine from how to refine: HPCT estimates adaptive buffers and GCR updates only the selected edge regions.
-      </p>
     </div>
   </section>
 
-  <section class="section is-light" id="comparison">
+  <section class="section is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Comparison</h2>
-      <div class="video-panel">
-        <img src="static/videos/JAX_033_buffer_optimization.gif" alt="JAX 033 buffer optimization animation">
+      <h2 class="title is-3 has-text-centered">Results</h2>
+      <div class="gif-grid">
+        <div class="gif-card"><img src="static/videos/JAX_161_az272-342.gif" alt="JAX 161 animation"><p>JAX 161</p></div>
+        <div class="gif-card"><img src="static/videos/JAX_168_az002-072.gif" alt="JAX 168 animation"><p>JAX 168</p></div>
+        <div class="gif-card"><img src="static/videos/JAX_264_az182-252.gif" alt="JAX 264 animation"><p>JAX 264</p></div>
+        <div class="gif-card"><img src="static/videos/OMA_203_az272-342.gif" alt="OMA 203 animation"><p>OMA 203</p></div>
+        <div class="gif-card"><img src="static/videos/OMA_251_az272-342.gif" alt="OMA 251 animation"><p>OMA 251</p></div>
+        <div class="gif-card"><img src="static/videos/OMA_288_az092-162.gif" alt="OMA 288 animation"><p>OMA 288</p></div>
+        <div class="gif-card"><img src="static/videos/POD_211_az092-162.gif" alt="POD 211 animation"><p>POD 211</p></div>
+        <div class="gif-card"><img src="static/videos/POD_415_az002-072.gif" alt="POD 415 animation"><p>POD 415</p></div>
+        <div class="gif-card"><img src="static/videos/POD_713_az272-342.gif" alt="POD 713 animation"><p>POD 713</p></div>
+        <div class="gif-card"><img src="static/videos/VAH_007_az182-252.gif" alt="VAH 007 animation"><p>VAH 007</p></div>
+        <div class="gif-card"><img src="static/videos/VAH_027_az182-252.gif" alt="VAH 027 animation"><p>VAH 027</p></div>
+        <div class="gif-card"><img src="static/videos/VAH_038_az272-342.gif" alt="VAH 038 animation"><p>VAH 038</p></div>
+        <div class="gif-card"><img src="static/videos/ZHU_049_az002-072.gif" alt="ZHU 049 animation"><p>ZHU 049</p></div>
+        <div class="gif-card"><img src="static/videos/ZHU_057_az092-162.gif" alt="ZHU 057 animation"><p>ZHU 057</p></div>
+        <div class="gif-card"><img src="static/videos/ZHU_068_az092-162.gif" alt="ZHU 068 animation"><p>ZHU 068</p></div>
       </div>
-      <p class="caption">
-        This section is reserved for your comparison animation. The original SkySplat-OV comparison images have been removed.
-      </p>
     </div>
   </section>
 
-  <section class="section" id="results">
+  <section class="section">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
-      <div class="metric-panel">
+      <div class="figure-panel">
         <table class="metrics">
           <thead>
-            <tr><th>Region</th><th>Best / Second</th><th>SRAD MAE</th><th>SRAD RMSE</th><th>PAG 0.3m</th><th>PAG 0.9m</th></tr>
+            <tr>
+              <th>Region</th>
+              <th>Best / Second</th>
+              <th>SRAD MAE</th>
+              <th>SRAD RMSE</th>
+              <th>PAG 0.3m</th>
+              <th>PAG 0.9m</th>
+            </tr>
           </thead>
           <tbody>
             <tr class="best"><td>Jacksonville</td><td>Best</td><td>1.48</td><td>3.01</td><td>31.59</td><td>67.33</td></tr>
@@ -237,20 +224,6 @@
       <p class="caption">
         SRAD is compared with the initial DSM, GRF, ResDepth, and HMSMNet using MAE, RMSE, PAG 0.3 m, and PAG 0.9 m over five regions.
       </p>
-    </div>
-  </section>
-
-  <section class="section is-light">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Takeaways</h2>
-      <div class="content has-text-justified">
-        <p>
-          SRAD is designed for DSM post-refinement rather than dense matching regeneration. Its advantage comes from explicitly aligning refinement regions with building footprints and DSM height transitions, then refining only the adaptive buffers with gradient-consistent height labels.
-        </p>
-        <p>
-          The experiments verify the contribution of adaptive buffer delineation, elastic contour stabilization, and second-order refinement under different footprint and refinement settings.
-        </p>
-      </div>
     </div>
   </section>
 
