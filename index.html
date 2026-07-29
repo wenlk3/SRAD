@@ -44,7 +44,12 @@
       box-shadow: 0 8px 28px rgba(23, 32, 51, .06);
     }
     .video-panel { position: relative; overflow: hidden; min-height: 320px; }
-    .video-panel video { width: 100%; border-radius: 6px; background: #0f172a; display: none; }
+    .video-panel img {
+      width: 100%;
+      border-radius: 6px;
+      background: #0f172a;
+      display: block;
+    }
     .fallback-animation {
       min-height: 300px;
       border-radius: 6px;
@@ -109,23 +114,6 @@
       .video-panel { min-height: 220px; }
     }
   </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".video-panel").forEach((panel) => {
-        const video = panel.querySelector("video");
-        const fallback = panel.querySelector(".fallback-animation");
-        if (!video || !fallback) return;
-        video.addEventListener("canplay", () => {
-          video.style.display = "block";
-          fallback.style.display = "none";
-        });
-        video.addEventListener("error", () => {
-          video.style.display = "none";
-          fallback.style.display = "block";
-        }, true);
-      });
-    });
-  </script>
 </head>
 <body>
   <section class="hero">
@@ -164,13 +152,10 @@
     <div class="container is-max-desktop">
       <div class="hero-body">
         <div class="video-panel">
-          <video autoplay muted loop playsinline poster="">
-            <source src="static/videos/JAX_033_buffer_optimization.mp4" type="video/mp4">
-          </video>
-          <div class="fallback-animation" aria-label="SRAD animated result placeholder"><span class="scan-line"></span></div>
+          <img src="static/videos/JAX_033_buffer_optimization.gif" alt="JAX 033 buffer optimization animation">
         </div>
         <p class="caption">
-          SRAD targets the transition region where satellite DSM building edges are blurred and expanded toward surrounding ground. The animation is loaded from <code>static/videos/JAX_033_buffer_optimization.mp4</code>; the original GIF is also available as <code>static/videos/JAX_033_buffer_optimization.gif</code>.
+          SRAD targets the transition region where satellite DSM building edges are blurred and expanded toward surrounding ground. The animation is loaded from <code>static/videos/JAX_033_buffer_optimization.gif</code>.
         </p>
       </div>
     </div>
@@ -224,10 +209,7 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Comparison</h2>
       <div class="video-panel">
-        <video autoplay muted loop playsinline>
-          <source src="static/videos/JAX_033_buffer_optimization.mp4" type="video/mp4">
-        </video>
-        <div class="fallback-animation" aria-label="SRAD animated comparison placeholder"><span class="scan-line"></span></div>
+        <img src="static/videos/JAX_033_buffer_optimization.gif" alt="JAX 033 buffer optimization animation">
       </div>
       <p class="caption">
         This section is reserved for your comparison animation. The original SkySplat-OV comparison images have been removed.
