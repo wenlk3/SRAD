@@ -3,308 +3,289 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>SkySplat-OV: Generalizable Language Gaussian Splatting for Open-Vocabulary Scene Understanding from Sparse Satellite Views</title>
-
-  <!-- Anonymous & ECCV-safe meta -->
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="description"
-        content="SkySplat-OV enables open-vocabulary 3D scene understanding from sparse-view satellite images via language-guided Gaussian splatting.">
-
-  <!-- Styles -->
+  <title>SRAD: Smooth Refinement with Adaptive Delineation for Fattening Building Edges in Satellite DSMs</title>
+  <meta name="description" content="SRAD refines fattening building edges in satellite DSMs through adaptive buffer delineation and gradient consistent height refinement.">
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-
-  <!-- Icons -->
-  <!-- <link rel="stylesheet" href="static/css/fontawesome.all.min.css"> -->
-  <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-
-  <!-- JS -->
-  <script defer src="static/js/index.js"></script>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    .image-compare-container {
+    :root {
+      --srad-blue: #1f6feb;
+      --srad-green: #159a74;
+      --srad-ink: #172033;
+      --srad-soft: #f6f8fb;
+      --srad-line: #dce3ef;
+    }
+    body { color: var(--srad-ink); }
+    .hero-body { padding-bottom: 2.5rem; }
+    .publication-links .button.is-dark {
+      background: #111827 !important;
+      border-color: #111827 !important;
+      color: #fff !important;
+    }
+    .author-line { margin: 1rem auto 0; max-width: 900px; line-height: 1.8; }
+    .tagline {
+      display: inline-flex;
+      gap: .5rem;
+      align-items: center;
+      margin-top: 1.2rem;
+      padding: .45rem .8rem;
+      border-radius: 8px;
+      background: #edf6ff;
+      color: #174f8f;
+      font-weight: 700;
+    }
+    .section.is-light { background: var(--srad-soft); }
+    .figure-panel, .video-panel, .metric-panel {
+      border: 1px solid var(--srad-line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 1rem;
+      box-shadow: 0 8px 28px rgba(23, 32, 51, .06);
+    }
+    .video-panel { position: relative; overflow: hidden; min-height: 320px; }
+    .video-panel video { width: 100%; border-radius: 6px; background: #0f172a; display: none; }
+    .fallback-animation {
+      min-height: 300px;
+      border-radius: 6px;
+      background:
+        linear-gradient(90deg, rgba(31,111,235,.14), transparent 32%, rgba(21,154,116,.16)),
+        repeating-linear-gradient(90deg, #e9eef7 0 1px, transparent 1px 36px),
+        repeating-linear-gradient(0deg, #e9eef7 0 1px, transparent 1px 36px);
       position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: auto;
       overflow: hidden;
-      border-radius: 12px;
     }
-    .image-compare-container img {
-      width: 100%;
-      display: block;
+    .fallback-animation::before,
+    .fallback-animation::after {
+      content: "";
+      position: absolute;
+      inset: 18% 8%;
+      border-radius: 8px;
+      border: 3px solid var(--srad-blue);
+      transform: skew(-8deg);
+      animation: trace 4.5s ease-in-out infinite alternate;
     }
-    .img-front {
+    .fallback-animation::after {
+      inset: 34% 20%;
+      border-color: var(--srad-green);
+      animation-delay: -1.4s;
+    }
+    .scan-line {
       position: absolute;
       top: 0;
-      left: 0;
-      clip-path: inset(0 50% 0 0);
+      bottom: 0;
+      width: 4px;
+      left: 12%;
+      background: #ef4444;
+      box-shadow: 0 0 22px rgba(239, 68, 68, .45);
+      animation: scan 4s linear infinite;
     }
-    .slider {
-      width: 100%;
-      margin-top: 12px;
+    @keyframes scan { 0% { left: 8%; } 100% { left: 92%; } }
+    @keyframes trace {
+      0% { transform: translateX(-16px) skew(-8deg) scale(.96); }
+      100% { transform: translateX(22px) skew(-8deg) scale(1.03); }
     }
-  /* ===== GitHub button: pure black + clickable feeling ===== */
-  .publication-links .button.is-dark {
-    background-color: #000000 !important;
-    border-color: #000000 !important;
-    color: #ffffff !important;
-    opacity: 1 !important;
-    cursor: pointer;
-    transition: background-color 0.15s ease, transform 0.1s ease;
-  }
-  
-  .publication-links .button.is-dark:hover {
-    background-color: #111111 !important;
-    border-color: #111111 !important;
-  }
-  
-  .publication-links .button.is-dark:active {
-    transform: translateY(1px);
-  }
-
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .method-card {
+      border: 1px solid var(--srad-line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 1rem;
+      height: 100%;
+    }
+    .method-card strong { color: var(--srad-blue); }
+    table.metrics { width: 100%; font-size: .92rem; }
+    table.metrics th, table.metrics td { padding: .55rem .45rem; border-bottom: 1px solid var(--srad-line); text-align: right; }
+    table.metrics th:first-child, table.metrics td:first-child { text-align: left; }
+    table.metrics tr.best td { font-weight: 700; color: #0f766e; }
+    .caption { color: #526078; font-size: .95rem; margin-top: .8rem; }
+    @media (max-width: 768px) {
+      .method-grid { grid-template-columns: 1fr; }
+      .title.is-1 { font-size: 2rem; }
+      .video-panel { min-height: 220px; }
+    }
   </style>
-  
   <script>
-  function slideCompare(val, imgId) {
-    const img = document.getElementById(imgId);
-    img.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
-  }
-</script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".video-panel").forEach((panel) => {
+        const video = panel.querySelector("video");
+        const fallback = panel.querySelector(".fallback-animation");
+        if (!video || !fallback) return;
+        video.addEventListener("canplay", () => {
+          video.style.display = "block";
+          fallback.style.display = "none";
+        });
+        video.addEventListener("error", () => {
+          video.style.display = "none";
+          fallback.style.display = "block";
+        }, true);
+      });
+    });
+  </script>
 </head>
-
 <body>
-
-<!-- ================= Title & Links ================= -->
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop has-text-centered">
-
-      <h1 class="title is-1">
-        SkySplat-OV: Generalizable Language Gaussian Splatting for Open-Vocabulary Scene Understanding from Sparse Satellite Views
-      </h1>
-      
-      <p class="subtitle is-4 has-text-dark">
-        <i class="fas fa-check-circle" style="color:#3273dc;"></i>
-        <strong>Accepted to ECCV 2026</strong>
-      </p>
-      
-      <div class="publication-links">
-
-        <!-- <span class="link-block">
-          <a href="static/pdfs/paper.pdf" target="_blank"
-             class="button is-normal is-rounded is-dark">
-            <span class="icon"><i class="fas fa-file-pdf"></i></span>
-            <span>Paper</span>
-          </a>
-        </span>
-
-        <span class="link-block">
-          <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank"
-             class="button is-normal is-rounded is-dark">
-            <span class="icon"><i class="ai ai-arxiv"></i></span>
-            <span>arXiv</span>
-          </a>
-        </span> -->
-
-        <span class="link-block">
-            <a class="button is-normal is-rounded is-dark"
-               href="javascript:void(0);"
-               aria-disabled="true">
-            <span class="icon"><i class="fab fa-github"></i></span>
-            <span>Code (Coming Soon)</span>
-          </a>
-        </span>
-
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop has-text-centered">
+        <h1 class="title is-1">SRAD: Smooth Refinement with Adaptive Delineation for Fattening Building Edges in Satellite DSMs</h1>
+        <p class="subtitle is-5 author-line">
+          Lekang Wen, Yujia Feng, Ruiqiu Xu, Xu Huang, Mi Wang
+        </p>
+        <p class="author-line">
+          Sun Yat-Sen University · Wuhan University · Hubei Luojia Laboratory
+        </p>
+        <p class="tagline"><i class="fas fa-map-location-dot"></i> Satellite DSM post-refinement for building edge-fattening</p>
+        <div class="publication-links" style="margin-top:1.4rem;">
+          <span class="link-block">
+            <a class="button is-normal is-rounded is-dark" href="#method">
+              <span class="icon"><i class="fas fa-diagram-project"></i></span><span>Method</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a class="button is-normal is-rounded is-dark" href="#comparison">
+              <span class="icon"><i class="fas fa-sliders"></i></span><span>Comparison</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a class="button is-normal is-rounded is-dark" href="#results">
+              <span class="icon"><i class="fas fa-chart-line"></i></span><span>Results</span>
+            </a>
+          </span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= Teaser ================= -->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <!-- 图片 -->
-      <figure class="image" style="margin-bottom: 14px;">
-        <img src="static/images/fig1_top.png"
-             alt="SkySplat-OV Teaser"
-             style="width:100%; border-radius:12px;">
-      </figure>
-
-      <!-- 文字说明 -->
-      <div class="content has-text-justified">
-        <p>
-          Comparison with existing methods. 
-          (a) Generalization results on the DFC19 dataset. SkySplat-OV achieves the best performance among all competing methods. 
-          (b) Per-scene optimization results. SkySplat-OV reaches optimal performance within only 9.82 seconds.
-          (c) DSM reconstruction and semantic segmentation results on a representative area of interest (OMA315). We report the MAE, mIoU, and reconstruction time of SkySplat-OV and Uni3R.
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <div class="video-panel">
+          <video autoplay muted loop playsinline poster="">
+            <source src="static/videos/result-animation.mp4" type="video/mp4">
+            <source src="static/videos/result-animation.webm" type="video/webm">
+          </video>
+          <div class="fallback-animation" aria-label="SRAD animated result placeholder"><span class="scan-line"></span></div>
+        </div>
+        <p class="caption">
+          SRAD targets the transition region where satellite DSM building edges are blurred and expanded toward surrounding ground. Replace <code>static/videos/result-animation.mp4</code> with the final animation to show your prepared result video here.
         </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <section class="section is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Brief Introduction</h2>
+      <div class="content has-text-justified">
+        <p>
+          Satellite photogrammetry offers low-cost and broad-coverage Digital Surface Models (DSMs), but building boundaries often suffer from edge-fattening caused by dense matching smoothness constraints. Fixed-buffer DSM post-refinement can miss local fattening widths or include nearby ground objects, while height-similarity refinement may create abrupt and unnatural transitions.
+        </p>
+        <p>
+          SRAD addresses these issues with two connected designs. Height Potential Contour Tracing (HPCT) adaptively delineates fattening-edge buffers from building footprints and DSM heights. Gradient Consistent Refinement (GCR) then optimizes heights within these buffers using plane labels and gradient consistency, preserving smooth topographic transitions while correcting building edges.
+        </p>
+      </div>
+      <div class="method-grid">
+        <div class="method-card"><strong>Problem</strong><br>Fattening edges blur building boundaries and contaminate nearby ground in satellite DSM products.</div>
+        <div class="method-card"><strong>Delineation</strong><br>HPCT traces adaptive interior and exterior buffers using a height potential field, attraction force, and elastic force.</div>
+        <div class="method-card"><strong>Refinement</strong><br>GCR replaces height similarity with gradient consistency to support smooth, continuous height transitions.</div>
+      </div>
+    </div>
+  </section>
 
-<!-- ================= Brief Introduction ================= -->
-<section class="section is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Brief Introduction</h2>
-
-    <div class="content has-text-justified">
-      <p>
-        Abstract. Open-vocabulary scene understanding aims to recognize arbitrary semantic concepts in 3D beyond a fixed set of categories. 
-        Recent methods built upon 3D Gaussian Splatting (3DGS) enable scene understanding by distilling features from vision–language models, but most rely on per-scene optimization and dense observations, which limit scalability.
-        More recent generalizable 3DGS methods show promise, but they perform poorly on sparse-view satellite imagery due to the pushbroom imaging mode of satellites, limited geometric constraints, and extreme scale variations.
-        To address these limitations, we propose SkySplat-OV, a feed-forward framework that integrates the rational polynomial coefficient (RPC) model into a generalizable language 3DGS pipeline. 
-        A Geometry–Radiance–Semantics Fusion module, together with monocular relative height supervision and multi-view feature distillation, enables accurate Gaussian prediction and view-consistent segmentation results.
-        Compared to per-scene optimization methods, SkySplat-OV achieves up to $1070\times$ speedup over LangSplatV2 with higher accuracy. It also outperforms generalizable 3DGS baselines on two benchmarks, 
-        and demonstrates strong cross-dataset generalization on MVS3D.
+  <section class="section" id="method">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Framework of SRAD</h2>
+      <div class="figure-panel">
+        <div class="method-grid">
+          <div class="method-card">
+            <strong>1. Input priors</strong><br>
+            Initial satellite DSM, DOM/image guidance, and building footprints define where edge correction should be considered.
+          </div>
+          <div class="method-card">
+            <strong>2. HPCT</strong><br>
+            Interior and exterior contours deform on the height potential surface until they delineate adaptive buffers.
+          </div>
+          <div class="method-card">
+            <strong>3. GCR</strong><br>
+            Plane labels are optimized inside the adaptive buffers and merged back into the original DSM.
+          </div>
+        </div>
+      </div>
+      <p class="caption">
+        The method separates where to refine from how to refine: HPCT estimates adaptive buffers and GCR updates only the selected edge regions.
       </p>
     </div>
+  </section>
 
-    <div class="has-text-centered">
-      <img src="static/images/fig2_pipeline.png"
-           alt="Overview of the SkySplat-OV framework"
-           style="width:100%; border-radius:12px;">
-    </div>
-
-    <!-- ===== Pipeline Description (placed directly under the figure) ===== -->
-    <div class="content has-text-justified" style="margin-top: 14px;">
-      <p>
-      SkySplat-OV first extracts deep features from sparse views and constructs a cost volume via RPC warping for regularization and height regression, achieving geometry reconstruction (Sec. 3.1). 
-        It then employs a GRS-Fusion module to accurately predict Gaussian parameters (Sec. 3.2).
-        Additionally, monocular relative height and language feature extracted from pre-trained 2D vision foundation models (VFMs) are incorporated as auxiliary supervision, 
-        combined with radiance supervision for self-supervised learning (Sec. 3.3). 
-        Finally, the distilled language features are fed into the FPN structure and decoder of SAM3 to obtain open-vocabulary segmentation results (Sec. 3.4).
+  <section class="section is-light" id="comparison">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Comparison</h2>
+      <div class="video-panel">
+        <video autoplay muted loop playsinline>
+          <source src="static/videos/comparison-animation.mp4" type="video/mp4">
+          <source src="static/videos/comparison-animation.webm" type="video/webm">
+        </video>
+        <div class="fallback-animation" aria-label="SRAD animated comparison placeholder"><span class="scan-line"></span></div>
+      </div>
+      <p class="caption">
+        This section is reserved for your comparison animation. The original SkySplat-OV comparison images have been removed.
       </p>
     </div>
+  </section>
 
-  </div>
-</section>
-
-
-  
-<!-- ================= Comparison with Uni3R ================= -->
-<section class="section is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Comparison with Uni3R</h2>
-
-    <!-- ================= AOI: JAX072 ================= -->
-    <h3 class="title is-5 has-text-centered">AOI: JAX072</h3>
-
-    <div class="columns is-gapless is-variable is-2">
-      <!-- SkySplat-OV -->
-      <div class="column compare-column">
-        <p class="has-text-centered method-title">SkySplat-OV (Ours)</p>
-        <div class="image-compare-container">
-          <img src="static/images/merged_scene_JAX_Tile_072-image.png">
-          <img src="static/images/merged_scene_JAX_Tile_072_language-image.png"
-               class="img-front"
-               id="jax072_ours">
-        </div>
-        <input type="range" min="0" max="100" value="50"
-               class="slider"
-               oninput="slideCompare(this.value, 'jax072_ours')">
+  <section class="section" id="results">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
+      <div class="metric-panel">
+        <table class="metrics">
+          <thead>
+            <tr><th>Region</th><th>Best / Second</th><th>SRAD MAE</th><th>SRAD RMSE</th><th>PAG 0.3m</th><th>PAG 0.9m</th></tr>
+          </thead>
+          <tbody>
+            <tr class="best"><td>Jacksonville</td><td>Best</td><td>1.48</td><td>3.01</td><td>31.59</td><td>67.33</td></tr>
+            <tr class="best"><td>Omaha</td><td>Best</td><td>1.02</td><td>1.88</td><td>35.87</td><td>70.16</td></tr>
+            <tr><td>Potsdam</td><td>Second / mixed</td><td>2.18</td><td>3.62</td><td>13.59</td><td>40.25</td></tr>
+            <tr><td>Vaihingen</td><td>Second</td><td>1.52</td><td>2.44</td><td>24.55</td><td>55.70</td></tr>
+            <tr class="best"><td>Zhuhai</td><td>Best / mixed</td><td>4.46</td><td>8.98</td><td>10.68</td><td>36.48</td></tr>
+          </tbody>
+        </table>
       </div>
+      <p class="caption">
+        SRAD is compared with the initial DSM, GRF, ResDepth, and HMSMNet using MAE, RMSE, PAG 0.3 m, and PAG 0.9 m over five regions.
+      </p>
+    </div>
+  </section>
 
-      <!-- Uni3R -->
-      <div class="column compare-column">
-        <p class="has-text-centered method-title">Uni3R</p>
-        <div class="image-compare-container">
-          <img src="static/images/uni3r_merged_scene_JAX_Tile_072-image.png">
-          <img src="static/images/uni3r_merged_scene_JAX_Tile_072_language-image.png"
-               class="img-front"
-               id="jax072_uni3r">
-        </div>
-        <input type="range" min="0" max="100" value="50"
-               class="slider"
-               oninput="slideCompare(this.value, 'jax072_uni3r')">
+  <section class="section is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Takeaways</h2>
+      <div class="content has-text-justified">
+        <p>
+          SRAD is designed for DSM post-refinement rather than dense matching regeneration. Its advantage comes from explicitly aligning refinement regions with building footprints and DSM height transitions, then refining only the adaptive buffers with gradient-consistent height labels.
+        </p>
+        <p>
+          The experiments verify the contribution of adaptive buffer delineation, elastic contour stabilization, and second-order refinement under different footprint and refinement settings.
+        </p>
       </div>
     </div>
-
-    <br>
-
-    <!-- ================= AOI: OMA315 ================= -->
-    <h3 class="title is-5 has-text-centered">AOI: OMA315</h3>
-
-    <div class="columns is-gapless is-variable is-2">
-      <!-- SkySplat-OV -->
-      <div class="column compare-column">
-        <p class="has-text-centered method-title">SkySplat-OV (Ours)</p>
-        <div class="image-compare-container">
-          <img src="static/images/merged_scene_OMA_Tile_315-image.png">
-          <img src="static/images/merged_scene_OMA_Tile_315_language-image.png"
-               class="img-front"
-               id="oma315_ours">
-        </div>
-        <input type="range" min="0" max="100" value="50"
-               class="slider"
-               oninput="slideCompare(this.value, 'oma315_ours')">
-      </div>
-
-      <!-- Uni3R -->
-      <div class="column compare-column">
-        <p class="has-text-centered method-title">Uni3R</p>
-        <div class="image-compare-container">
-          <img src="static/images/uni3r_merged_scene_OMA_Tile_315-image.png">
-          <img src="static/images/uni3r_merged_scene_OMA_Tile_315_language-image.png"
-               class="img-front"
-               id="oma315_uni3r">
-        </div>
-        <input type="range" min="0" max="100" value="50"
-               class="slider"
-               oninput="slideCompare(this.value, 'oma315_uni3r')">
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-
-<!-- ================= Results ================= -->
-<section class="section is-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Results</h2>
-
-    <div class="has-text-centered">
-      <img src="static/images/fig6_dsm.png"
-           alt="Experimental Results"
-           style="width:100%; border-radius:12px;">
-    </div>
-  </div>
-</section>
-
-  
-<!-- ================= Footer ================= -->
+  </section>
 
   <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page follows the academic project-page style used by <a href="https://skysplat-ov.github.io/" target="_blank">SkySplat-OV</a> and the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</footer>
-
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
-
-    <!-- End of Statcounter Code -->
-
+  </footer>
 </body>
 </html>
