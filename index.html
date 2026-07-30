@@ -55,7 +55,7 @@
 
     .gif-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1.25rem;
     }
 
@@ -81,6 +81,38 @@
       text-align: center;
     }
 
+    .qualitative-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .qualitative-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: .75rem;
+    }
+
+    .qualitative-card img {
+      width: 100%;
+      display: block;
+      border-radius: 6px;
+    }
+
+    .qualitative-card p {
+      margin-top: .65rem;
+      margin-bottom: 0;
+      color: #4b5563;
+      font-size: .92rem;
+      text-align: center;
+    }
+
+    .table-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
     table.metrics {
       width: 100%;
       font-size: .92rem;
@@ -103,6 +135,11 @@
       color: #0f766e;
     }
 
+    table.metrics tr.gain td {
+      background: #f8e2e1;
+      font-weight: 600;
+    }
+
     .caption {
       color: #4b5563;
       font-size: .95rem;
@@ -115,6 +152,10 @@
       }
 
       .gif-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .table-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -149,23 +190,12 @@
     </div>
   </section>
 
-  <section class="section is-light">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Brief Introduction</h2>
-      <div class="content has-text-justified">
-        <p>
-          Satellite photogrammetry provides broad-coverage Digital Surface Models (DSMs), but building boundaries often suffer from edge-fattening caused by dense matching smoothness constraints. Fixed-buffer DSM post-refinement can miss local fattening widths or include nearby ground objects, while height-similarity refinement may create abrupt and unnatural transitions.
-        </p>
-        <p>
-          SRAD addresses these issues with two connected designs. Height Potential Contour Tracing (HPCT) adaptively delineates fattening-edge buffers from building footprints and DSM heights. Gradient Consistent Refinement (GCR) then optimizes heights inside these buffers using plane labels and gradient consistency, preserving smooth topographic transitions while correcting building edges.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Framework</h2>
+      <h2 class="title is-3 has-text-centered">Methodology</h2>
+      <div class="figure-panel">
+        <img src="static/images/srad_framework.png" alt="Framework of SRAD">
+      </div>
       <div class="content has-text-justified">
         <p>
           SRAD separates where to refine from how to refine. HPCT estimates adaptive interior and exterior buffers around each building footprint from the height potential field, and GCR updates only these selected edge regions before merging the refined heights back into the initial DSM.
@@ -176,7 +206,7 @@
 
   <section class="section is-light">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Results</h2>
+      <h2 class="title is-3 has-text-centered">3D Visualization</h2>
       <div class="gif-grid">
         <div class="gif-card"><img src="static/videos/JAX_161_az272-342.gif" alt="JAX 161 animation"><p>JAX 161</p></div>
         <div class="gif-card"><img src="static/videos/JAX_168_az002-072.gif" alt="JAX 168 animation"><p>JAX 168</p></div>
@@ -199,30 +229,104 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
-      <div class="figure-panel">
-        <table class="metrics">
-          <thead>
-            <tr>
-              <th>Region</th>
-              <th>Best / Second</th>
-              <th>SRAD MAE</th>
-              <th>SRAD RMSE</th>
-              <th>PAG 0.3m</th>
-              <th>PAG 0.9m</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="best"><td>Jacksonville</td><td>Best</td><td>1.48</td><td>3.01</td><td>31.59</td><td>67.33</td></tr>
-            <tr class="best"><td>Omaha</td><td>Best</td><td>1.02</td><td>1.88</td><td>35.87</td><td>70.16</td></tr>
-            <tr><td>Potsdam</td><td>Second / mixed</td><td>2.18</td><td>3.62</td><td>13.59</td><td>40.25</td></tr>
-            <tr><td>Vaihingen</td><td>Second</td><td>1.52</td><td>2.44</td><td>24.55</td><td>55.70</td></tr>
-            <tr class="best"><td>Zhuhai</td><td>Best / mixed</td><td>4.46</td><td>8.98</td><td>10.68</td><td>36.48</td></tr>
-          </tbody>
-        </table>
+      <h2 class="title is-3 has-text-centered">Qualitative Comparison</h2>
+      <div class="qualitative-grid">
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_jax.png" alt="Qualitative comparison on JAX"><p>JAX</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_oma.png" alt="Qualitative comparison on OMA"><p>OMA</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_pod.png" alt="Qualitative comparison on POD"><p>POD</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_vah.png" alt="Qualitative comparison on VAH"><p>VAH</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_zhu.png" alt="Qualitative comparison on ZHU"><p>ZHU</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section is-light">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Quantitative Comparison</h2>
+      <div class="table-grid">
+        <div class="figure-panel">
+          <h3 class="title is-5 has-text-centered">JAX</h3>
+          <table class="metrics">
+            <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>PAG 1m</th><th>PAG 2m</th></tr></thead>
+            <tbody>
+              <tr><td>SSR</td><td>2.01</td><td>3.98</td><td>39.59</td><td>63.92</td></tr>
+              <tr><td>GRF</td><td><u>1.67</u></td><td><u>3.41</u></td><td><u>46.42</u></td><td><u>69.03</u></td></tr>
+              <tr><td>ResDepth</td><td>1.92</td><td>3.47</td><td>42.00</td><td>65.77</td></tr>
+              <tr><td>HMSMNet</td><td>2.63</td><td>4.59</td><td>30.14</td><td>56.03</td></tr>
+              <tr><td>RDSMNet</td><td>3.05</td><td>5.43</td><td>24.50</td><td>50.70</td></tr>
+              <tr><td>MRGE</td><td>2.29</td><td>4.05</td><td>35.36</td><td>60.52</td></tr>
+              <tr class="best"><td>SRAD (Ours)</td><td>1.48</td><td>3.01</td><td>50.89</td><td>72.16</td></tr>
+              <tr class="gain"><td>wrtSOTA</td><td>-0.19</td><td>-0.40</td><td>+4.47</td><td>+3.13</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-panel">
+          <h3 class="title is-5 has-text-centered">OMA</h3>
+          <table class="metrics">
+            <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>PAG 1m</th><th>PAG 2m</th></tr></thead>
+            <tbody>
+              <tr><td>SSR</td><td>1.53</td><td>2.84</td><td>50.31</td><td>71.77</td></tr>
+              <tr><td>GRF</td><td>1.41</td><td>2.41</td><td>53.74</td><td>74.09</td></tr>
+              <tr><td>ResDepth</td><td><u>1.16</u></td><td><u>2.22</u></td><td><u>59.65</u></td><td><strong>80.54</strong></td></tr>
+              <tr><td>HMSMNet</td><td>1.95</td><td>3.26</td><td>41.92</td><td>65.71</td></tr>
+              <tr><td>RDSMNet</td><td>2.31</td><td>3.94</td><td>35.26</td><td>60.45</td></tr>
+              <tr><td>MRGE</td><td>1.65</td><td>2.79</td><td>48.14</td><td>70.25</td></tr>
+              <tr class="best"><td>SRAD (Ours)</td><td>1.02</td><td>1.88</td><td>63.88</td><td><u>77.92</u></td></tr>
+              <tr class="gain"><td>wrtSOTA</td><td>-0.14</td><td>-0.34</td><td>+4.23</td><td>-2.62</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-panel">
+          <h3 class="title is-5 has-text-centered">POD</h3>
+          <table class="metrics">
+            <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>PAG 1m</th><th>PAG 2m</th></tr></thead>
+            <tbody>
+              <tr><td>SSR</td><td>2.59</td><td>4.09</td><td>31.35</td><td>57.11</td></tr>
+              <tr><td>GRF</td><td>2.29</td><td><u>3.71</u></td><td>35.93</td><td>60.99</td></tr>
+              <tr><td>ResDepth</td><td><u>2.18</u></td><td>3.76</td><td><strong>38.17</strong></td><td><u>62.41</u></td></tr>
+              <tr><td>HMSMNet</td><td>2.97</td><td>4.83</td><td>26.03</td><td>52.20</td></tr>
+              <tr><td>RDSMNet</td><td>3.28</td><td>5.44</td><td>22.34</td><td>48.49</td></tr>
+              <tr><td>MRGE</td><td>2.50</td><td>4.10</td><td>32.47</td><td>58.09</td></tr>
+              <tr class="best"><td>SRAD (Ours)</td><td>2.13</td><td>3.62</td><td><u>37.67</u></td><td>62.80</td></tr>
+              <tr class="gain"><td>wrtSOTA</td><td>-0.05</td><td>-0.09</td><td>-0.50</td><td>+0.39</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-panel">
+          <h3 class="title is-5 has-text-centered">VAH</h3>
+          <table class="metrics">
+            <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>PAG 1m</th><th>PAG 2m</th></tr></thead>
+            <tbody>
+              <tr><td>SSR</td><td>1.76</td><td>2.79</td><td>46.13</td><td>68.82</td></tr>
+              <tr><td>GRF</td><td>1.62</td><td>2.55</td><td>49.25</td><td>71.03</td></tr>
+              <tr><td>ResDepth</td><td><u>1.52</u></td><td><u>2.44</u></td><td><u>51.45</u></td><td><u>72.54</u></td></tr>
+              <tr><td>HMSMNet</td><td>2.61</td><td>4.32</td><td>30.77</td><td>56.59</td></tr>
+              <tr><td>RDSMNet</td><td>3.06</td><td>5.17</td><td>24.71</td><td>50.91</td></tr>
+              <tr><td>MRGE</td><td>2.06</td><td>3.38</td><td>39.93</td><td>64.19</td></tr>
+              <tr class="best"><td>SRAD (Ours)</td><td>1.34</td><td>2.17</td><td>55.82</td><td>75.46</td></tr>
+              <tr class="gain"><td>wrtSOTA</td><td>-0.18</td><td>-0.27</td><td>+4.37</td><td>+2.92</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="figure-panel">
+          <h3 class="title is-5 has-text-centered">ZHU</h3>
+          <table class="metrics">
+            <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>PAG 1m</th><th>PAG 2m</th></tr></thead>
+            <tbody>
+              <tr><td>SSR</td><td>2.55</td><td>2.95</td><td>33.62</td><td>59.07</td></tr>
+              <tr><td>GRF</td><td><u>2.05</u></td><td><u>2.62</u></td><td><u>41.54</u></td><td><u>65.42</u></td></tr>
+              <tr><td>ResDepth</td><td>2.46</td><td>2.75</td><td>35.16</td><td>60.36</td></tr>
+              <tr><td>HMSMNet</td><td>2.88</td><td>3.94</td><td>28.15</td><td>54.21</td></tr>
+              <tr><td>RDSMNet</td><td>3.27</td><td>4.56</td><td>23.39</td><td>49.58</td></tr>
+              <tr><td>MRGE</td><td>2.69</td><td>3.40</td><td>31.14</td><td>56.92</td></tr>
+              <tr class="best"><td>SRAD (Ours)</td><td>1.46</td><td>2.24</td><td>53.13</td><td>73.68</td></tr>
+              <tr class="gain"><td>wrtSOTA</td><td>-0.59</td><td>-0.38</td><td>+11.59</td><td>+8.26</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <p class="caption">
-        SRAD is compared with the initial DSM, GRF, ResDepth, and HMSMNet using MAE, RMSE, PAG 0.3 m, and PAG 0.9 m over five regions.
+        Metrics are computed over adaptive buffers. Lower MAE/RMSE and higher PAG are better.
       </p>
     </div>
   </section>
