@@ -246,28 +246,23 @@
       <div class="content has-text-justified intro-copy">
         <h3>Abstract</h3>
         <p class="lead">
-          Satellite photogrammetry provides large-scale Digital Surface Models (DSMs) for urban applications, but building boundaries in satellite DSMs are often blurred and expanded by matching smoothness constraints. These fattening building edges cause large local height errors and degrade downstream 3D building modeling. Existing dense matching and learning-based refinement methods usually optimize complete disparity maps or complete DSMs, so the boundary regions that occupy only a small proportion of pixels are not explicitly corrected. DSM post-refinement is more direct, but fixed buffers may either miss wide fattening edges or include nearby ground objects, while height-similarity constraints may introduce abrupt discontinuities. SRAD addresses these limitations with adaptive buffer delineation and gradient-consistent height refinement, producing more accurate and smoother building-edge DSMs across five urban regions.
-        </p>
-        <h3>Background and Limitation</h3>
-        <p>
-          The edge-fattening problem appears when true height jumps near building footprints are smoothed during dense matching. In satellite DSMs, submeter resolution makes these transition regions span multiple pixels and often overlap with roads, vegetation, or neighboring objects. Line-aware dense matching can reduce smoothing around strong image edges, but weak building boundaries may be confused with texture. Learning-based methods can improve global DSM quality, yet their losses are usually dominated by reliable interior or ground pixels rather than the narrow but important building-edge regions.
+          Satellite photogrammetry provides large-scale Digital Surface Models (DSMs) for urban applications, but building boundaries in satellite DSMs are often blurred and expanded by matching smoothness constraints. These fattening building edges cause large local height errors and degrade downstream 3D building modeling.
         </p>
         <p>
-          Footprint-guided post-refinement provides a clearer way to target fattening edges, because building footprints indicate where geometric discontinuities should occur. However, a fixed buffer width cannot adapt to local fattening width: a small buffer leaves part of the blurred boundary untouched, while a large buffer pulls surrounding ground objects into the refinement domain. Moreover, methods that propagate heights based on image similarity can create unnatural discontinuities when image color is not consistent with height structure.
-        </p>
-        <h3>Motivation and Methodology</h3>
-        <p>
-          SRAD is motivated by a simple observation: fattening edges are height-transition regions between roof and ground, so their termination can be searched on the DSM height potential surface instead of being assigned by a fixed distance. SRAD decomposes the correction into two connected steps. Height Potential Contour Tracing (HPCT) uses building footprints as initial contour priors and drives the contours according to the DSM height field, yielding adaptive interior and exterior buffers that cover local fattening edges while avoiding nearby objects.
+          Existing dense matching and learning-based refinement methods usually optimize complete disparity maps or complete DSMs, so the narrow boundary regions are not explicitly corrected. DSM post-refinement is more direct, but fixed buffers may either miss wide fattening edges or include nearby ground objects, while height-similarity constraints may introduce abrupt height discontinuities.
         </p>
         <p>
-          After the refinement domain is delineated, Gradient Consistent Refinement (GCR) focuses on how heights should be updated inside the selected buffers. Rather than forcing neighboring pixels with similar image intensities to have similar heights, GCR optimizes plane labels with confidence-weighted data terms and gradient consistency constraints. This design preserves reliable DSM regions, updates only the uncertain building-edge areas, and encourages continuous height transitions around building boundaries.
+          To address these limitations, we propose SRAD, a smooth refinement framework with adaptive delineation for fattening building edges. SRAD traces adaptive buffers from building footprints and DSM heights, then refines only the selected edge regions with gradient-consistent constraints. Experiments on five regions show that SRAD better delineates fattening edges and produces smoother height transitions around building boundaries.
         </p>
         <h3>Framework</h3>
         <div class="figure-panel">
           <img src="static/images/srad_framework.jpg" alt="Framework of SRAD">
         </div>
         <p>
-          SRAD separates where to refine from how to refine. Height Potential Contour Tracing (HPCT) estimates adaptive interior and exterior buffers around each building footprint from the height potential field. Gradient Consistent Refinement (GCR) then updates only these selected edge regions with confidence-weighted data terms and gradient consistency constraints before merging the refined heights back into the initial DSM.
+          SRAD separates where to refine from how to refine. Height Potential Contour Tracing (HPCT) uses the building footprint as an initial contour prior and treats the DSM height as a potential field, producing adaptive interior and exterior buffers that cover local fattening edges while avoiding nearby objects.
+        </p>
+        <p>
+          Gradient Consistent Refinement (GCR) then updates the selected buffers with confidence-weighted data terms and gradient consistency constraints. The refined heights are finally merged back into the initial DSM, preserving reliable regions while improving the uncertain building-edge areas.
         </p>
       </div>
     </div>
