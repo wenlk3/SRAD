@@ -53,27 +53,27 @@
       background: #111827;
     }
 
-    .gif-grid {
+    .media-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(1, minmax(0, 1fr));
       gap: 1.25rem;
     }
 
-    .gif-card {
+    .media-card {
       background: #fff;
       border: 1px solid #e5e7eb;
       border-radius: 8px;
       padding: .75rem;
     }
 
-    .gif-card img {
+    .media-card video {
       width: 100%;
       display: block;
       border-radius: 6px;
       background: #111827;
     }
 
-    .gif-card p {
+    .media-card p {
       margin-top: .65rem;
       margin-bottom: 0;
       color: #4b5563;
@@ -151,7 +151,7 @@
         font-size: 2rem;
       }
 
-      .gif-grid {
+      .media-grid {
         grid-template-columns: 1fr;
       }
 
@@ -207,22 +207,27 @@
   <section class="section is-light">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">3D Visualization</h2>
-      <div class="gif-grid">
-        <div class="gif-card"><img src="static/videos/JAX_161_az272-342.gif" alt="JAX 161 animation"><p>JAX 161</p></div>
-        <div class="gif-card"><img src="static/videos/JAX_168_az002-072.gif" alt="JAX 168 animation"><p>JAX 168</p></div>
-        <div class="gif-card"><img src="static/videos/JAX_264_az182-252.gif" alt="JAX 264 animation"><p>JAX 264</p></div>
-        <div class="gif-card"><img src="static/videos/OMA_203_az272-342.gif" alt="OMA 203 animation"><p>OMA 203</p></div>
-        <div class="gif-card"><img src="static/videos/OMA_251_az272-342.gif" alt="OMA 251 animation"><p>OMA 251</p></div>
-        <div class="gif-card"><img src="static/videos/OMA_288_az092-162.gif" alt="OMA 288 animation"><p>OMA 288</p></div>
-        <div class="gif-card"><img src="static/videos/POD_211_az092-162.gif" alt="POD 211 animation"><p>POD 211</p></div>
-        <div class="gif-card"><img src="static/videos/POD_415_az002-072.gif" alt="POD 415 animation"><p>POD 415</p></div>
-        <div class="gif-card"><img src="static/videos/POD_713_az272-342.gif" alt="POD 713 animation"><p>POD 713</p></div>
-        <div class="gif-card"><img src="static/videos/VAH_007_az182-252.gif" alt="VAH 007 animation"><p>VAH 007</p></div>
-        <div class="gif-card"><img src="static/videos/VAH_027_az182-252.gif" alt="VAH 027 animation"><p>VAH 027</p></div>
-        <div class="gif-card"><img src="static/videos/VAH_038_az272-342.gif" alt="VAH 038 animation"><p>VAH 038</p></div>
-        <div class="gif-card"><img src="static/videos/ZHU_049_az002-072.gif" alt="ZHU 049 animation"><p>ZHU 049</p></div>
-        <div class="gif-card"><img src="static/videos/ZHU_057_az092-162.gif" alt="ZHU 057 animation"><p>ZHU 057</p></div>
-        <div class="gif-card"><img src="static/videos/ZHU_068_az092-162.gif" alt="ZHU 068 animation"><p>ZHU 068</p></div>
+      <div class="media-grid">
+        <div class="media-card">
+          <video src="static/videos/region_jax.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <p>JAX: 161, 168, 264</p>
+        </div>
+        <div class="media-card">
+          <video src="static/videos/region_oma.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <p>OMA: 203, 251, 288</p>
+        </div>
+        <div class="media-card">
+          <video src="static/videos/region_pod.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <p>POD: 211, 415, 713</p>
+        </div>
+        <div class="media-card">
+          <video src="static/videos/region_vah.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <p>VAH: 007, 027, 038</p>
+        </div>
+        <div class="media-card">
+          <video src="static/videos/region_zhu.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <p>ZHU: 049, 057, 068</p>
+        </div>
       </div>
     </div>
   </section>
