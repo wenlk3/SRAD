@@ -81,6 +81,21 @@
       text-align: center;
     }
 
+    .media-title {
+      margin: .75rem 0 .1rem;
+      color: #111827;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .media-subtitle {
+      margin: 0;
+      color: #6b7280;
+      font-size: .86rem;
+      text-align: center;
+    }
+
     .qualitative-grid {
       display: grid;
       gap: 1.25rem;
@@ -194,7 +209,7 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Methodology</h2>
       <div class="figure-panel">
-        <img src="static/images/srad_framework.png" alt="Framework of SRAD">
+        <img src="static/images/srad_framework.jpg" alt="Framework of SRAD">
       </div>
       <div class="content has-text-justified">
         <p>
@@ -209,24 +224,29 @@
       <h2 class="title is-3 has-text-centered">3D Visualization</h2>
       <div class="media-grid">
         <div class="media-card">
-          <video src="static/videos/region_jax.mp4" autoplay muted loop playsinline preload="metadata"></video>
-          <p>JAX: 161, 168, 264</p>
+          <video src="static/videos/region_jax.mp4" controls preload="metadata"></video>
+          <h3 class="media-title">Jacksonville</h3>
+          <p class="media-subtitle">JAX 161 · JAX 168 · JAX 264</p>
         </div>
         <div class="media-card">
-          <video src="static/videos/region_oma.mp4" autoplay muted loop playsinline preload="metadata"></video>
-          <p>OMA: 203, 251, 288</p>
+          <video src="static/videos/region_oma.mp4" controls preload="metadata"></video>
+          <h3 class="media-title">Omaha</h3>
+          <p class="media-subtitle">OMA 203 · OMA 251 · OMA 288</p>
         </div>
         <div class="media-card">
-          <video src="static/videos/region_pod.mp4" autoplay muted loop playsinline preload="metadata"></video>
-          <p>POD: 211, 415, 713</p>
+          <video src="static/videos/region_pod.mp4" controls preload="metadata"></video>
+          <h3 class="media-title">Potsdam</h3>
+          <p class="media-subtitle">POD 211 · POD 415 · POD 713</p>
         </div>
         <div class="media-card">
-          <video src="static/videos/region_vah.mp4" autoplay muted loop playsinline preload="metadata"></video>
-          <p>VAH: 007, 027, 038</p>
+          <video src="static/videos/region_vah.mp4" controls preload="metadata"></video>
+          <h3 class="media-title">Vaihingen</h3>
+          <p class="media-subtitle">VAH 007 · VAH 027 · VAH 038</p>
         </div>
         <div class="media-card">
-          <video src="static/videos/region_zhu.mp4" autoplay muted loop playsinline preload="metadata"></video>
-          <p>ZHU: 049, 057, 068</p>
+          <video src="static/videos/region_zhu.mp4" controls preload="metadata"></video>
+          <h3 class="media-title">Zhuhai</h3>
+          <p class="media-subtitle">ZHU 049 · ZHU 057 · ZHU 068</p>
         </div>
       </div>
     </div>
@@ -236,11 +256,11 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Qualitative Comparison</h2>
       <div class="qualitative-grid">
-        <div class="qualitative-card"><img src="static/images/qualitative_comparison_jax.png" alt="Qualitative comparison on JAX"><p>JAX</p></div>
-        <div class="qualitative-card"><img src="static/images/qualitative_comparison_oma.png" alt="Qualitative comparison on OMA"><p>OMA</p></div>
-        <div class="qualitative-card"><img src="static/images/qualitative_comparison_pod.png" alt="Qualitative comparison on POD"><p>POD</p></div>
-        <div class="qualitative-card"><img src="static/images/qualitative_comparison_vah.png" alt="Qualitative comparison on VAH"><p>VAH</p></div>
-        <div class="qualitative-card"><img src="static/images/qualitative_comparison_zhu.png" alt="Qualitative comparison on ZHU"><p>ZHU</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_jax.jpg" alt="Qualitative comparison on Jacksonville"><p>Jacksonville</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_oma.jpg" alt="Qualitative comparison on Omaha"><p>Omaha</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_pod.jpg" alt="Qualitative comparison on Potsdam"><p>Potsdam</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_vah.jpg" alt="Qualitative comparison on Vaihingen"><p>Vaihingen</p></div>
+        <div class="qualitative-card"><img src="static/images/qualitative_comparison_zhu.jpg" alt="Qualitative comparison on Zhuhai"><p>Zhuhai</p></div>
       </div>
     </div>
   </section>
