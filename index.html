@@ -50,7 +50,25 @@
       width: 100%;
       display: block;
       border-radius: 6px;
-      background: #111827;
+      background: #fff;
+    }
+
+    .intro-copy {
+      margin-top: 1.25rem;
+    }
+
+    .intro-copy .lead {
+      color: #374151;
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+
+    .intro-copy h3 {
+      margin-top: 1.45rem;
+      margin-bottom: .55rem;
+      color: #111827;
+      font-size: 1.18rem;
+      font-weight: 700;
     }
 
     .media-grid {
@@ -151,7 +169,7 @@
     }
 
     table.metrics tr.gain td {
-      background: #f8e2e1;
+      background: #d7f6ff;
       font-weight: 600;
     }
 
@@ -207,13 +225,24 @@
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 has-text-centered">Methodology</h2>
+      <h2 class="title is-3 has-text-centered">Brief Introduction</h2>
       <div class="figure-panel">
-        <img src="static/images/srad_framework.jpg" alt="Framework of SRAD">
+        <img src="static/images/srad_story.jpg" alt="Motivation and gap of SRAD">
+        <p class="caption">
+          Existing fixed-buffer refinement can either miss wide fattening edges or include nearby ground objects. SRAD addresses this gap by adaptively delineating the edge region from DSM height structure and then refining heights with smooth transitions.
+        </p>
       </div>
-      <div class="content has-text-justified">
+      <div class="content has-text-justified intro-copy">
+        <h3>Abstract</h3>
+        <p class="lead">
+          Satellite photogrammetry provides large-scale DSMs for urban applications, but building boundaries are often blurred and expanded by matching smoothness constraints. These fattening building edges cause local height errors and degrade downstream 3D building modeling. SRAD refines these regions by tracing adaptive buffers from building footprints and DSM heights, then optimizing heights with gradient-consistent constraints. Experiments across five regions show that SRAD better delineates fattening edges and produces smoother transitions around building boundaries.
+        </p>
+        <h3>Methodology</h3>
+        <div class="figure-panel">
+          <img src="static/images/srad_framework.jpg" alt="Framework of SRAD">
+        </div>
         <p>
-          SRAD separates where to refine from how to refine. HPCT estimates adaptive interior and exterior buffers around each building footprint from the height potential field, and GCR updates only these selected edge regions before merging the refined heights back into the initial DSM.
+          SRAD separates where to refine from how to refine. Height Potential Contour Tracing (HPCT) estimates adaptive interior and exterior buffers around each building footprint from the height potential field. Gradient Consistent Refinement (GCR) then updates only these selected edge regions with confidence-weighted data terms and gradient consistency constraints before merging the refined heights back into the initial DSM.
         </p>
       </div>
     </div>
